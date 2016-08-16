@@ -1,9 +1,5 @@
-import requests
+import requests, cmd, sys
 from bs4 import BeautifulSoup
-import cmd
-import string, sys
-import re
-import csv
 
 
 class CLI(cmd.Cmd):
@@ -47,6 +43,11 @@ class Scraper(object):
         self.set_nat_dex(self.web_scraper())
 
     def printer(self):
+        print()
+        print('-----------------------------------------')
+        print()
+        print('Gen ', self.get_generation(), ' List')
+        print('----------')
         for datum in self.__nat_dex:
             print(datum)
 
@@ -141,6 +142,7 @@ class Scraper(object):
                 res.append(cur_line)
         return res
 
+"""
 scrape = Scraper(1)
 print('Gen 1 List')
 print('----------')
@@ -185,3 +187,4 @@ print()
 print('Gen 6 List')
 print('----------')
 scrape.printer()
+"""
