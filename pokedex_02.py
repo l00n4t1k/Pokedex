@@ -44,7 +44,6 @@ class Scraper(object):
     def __init__(self, the_gen):
         self.set_generation(the_gen)
         self.gen_decider(the_gen)
-        # print(self.__min, self.__max)
         self.set_nat_dex(self.web_scraper())
 
     def printer(self):
@@ -70,7 +69,6 @@ class Scraper(object):
         elif gen == 6:
             self.__min = 649
             self.__max = 721
-        # print(len(self.__nat_dex))
 
     def set_nat_dex(self, the_dex):
         self.__nat_dex = the_dex
@@ -104,12 +102,8 @@ class Scraper(object):
 
         dex_data = self.hash_stripper(dex_data)
         dex_data = self.type_formatter(dex_data)
-        # print(dex_data)
         out = self.formatter(dex_data)
-        # print(len(out), ' scraper out length')
         return out
-
-        # self.printer(out)
 
     @staticmethod
     def hash_stripper(the_list):
@@ -124,8 +118,6 @@ class Scraper(object):
         res = []
         tl = []
         for datum in the_list:
-            # datum[2] = datum[2].replace(' · ', '/')
-            # res.append(datum)
             if datum[2].find(' · ') == -1:
                 datum.append('')
             else:
@@ -137,11 +129,8 @@ class Scraper(object):
 
     def formatter(self, the_list):
         res = []
-        # print(len(the_list), ' the formatter list length')
         cur_line = ''
-        # for datum in the_list:
         for datum in the_list[self.__min:self.__max]:
-            # print(int(datum[0]))
             if int(datum[0]) > self.__min:
                 if int(datum[0]) <= self.__max:
                     cur_line = datum[0] + ', ' + datum[1] + ', ' + datum[2]
@@ -150,13 +139,9 @@ class Scraper(object):
                 else:
                     break
                 res.append(cur_line)
-        # print(len(res), ' formatter res length')
         return res
 
 scrape = Scraper(1)
-print()
-print('-----------------------------------------')
-print()
 print('Gen 1 List')
 print('----------')
 scrape.printer()
