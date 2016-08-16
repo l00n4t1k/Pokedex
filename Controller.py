@@ -1,6 +1,7 @@
 from scraper import Scraper
 from formatter import Formatter
 
+
 class Controller(object):
 
     _myScraper = ''
