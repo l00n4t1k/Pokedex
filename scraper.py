@@ -1,5 +1,6 @@
 import requests
 from formatter import Formatter as f
+from printer import printer
 from bs4 import BeautifulSoup
 
 
@@ -13,15 +14,6 @@ class Scraper(object):
 
     def __init__(self, the_formatter):
         self.__my_formatter = the_formatter
-
-    def printer(self):
-        print()
-        print('-----------------------------------------')
-        print()
-        print('Gen ', self.get_generation(), ' List')
-        print('----------')
-        for datum in self.__nat_dex:
-            print(datum)
 
     def gen_decider(self):
         gen = self.get_generation()
@@ -74,8 +66,8 @@ class Scraper(object):
             stuffs = card.find_all(['a', 'small'])
             dex_data.append([stuff.text for stuff in stuffs[1:4]])
 
-        dex_data1 = f.hash_stripper(dex_data)
-        dex_data2 = f.type_formatter(dex_data1)
-        out = f.formatter(dex_data2, self.__min, self.__max)
+        dex_data1 = self.__my_formatter.hash_stripper(dex_data)
+        dex_data2 = self.__my_formatter.type_formatter(dex_data1)
+        out = self.__my_formatter.formatter(dex_data2, self.__min, self.__max)
         return out
 

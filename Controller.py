@@ -1,26 +1,21 @@
-from scraper import Scraper
-from formatter import Formatter
-
-
 class Controller(object):
 
-    _myScraper = ''
-    _full_dex = []
+    my_scraper = ''
+    my_formatter = ''
+    full_dex = []
 
-    def __init__(self, the_scraper):
-        self._myScraper = the_scraper
+    def __init__(self, the_scraper, the_formatter):
+        self.my_scraper = the_scraper
+        self.my_formatter = the_formatter
 
     def set_full_dex(self, the_dex):
-        self._full_dex = the_dex
+        self.full_dex = the_dex
 
     def get_full_dex(self):
-        self._full_dex = self._myScraper.web_scrape()
-
-f = Formatter()
-s = Scraper(f)
-c = Controller(s)
+        self.full_dex = self.my_scraper.web_scrape()
+"""
 s.set_generation(2)
 s.gen_decider()
 s.set_nat_dex(s.web_scraper())
 s.printer()
-
+"""
