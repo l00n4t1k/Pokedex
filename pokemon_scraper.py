@@ -68,8 +68,10 @@ class PokemonScraper(Scraper):
         self.__my_printer.printer(the_gen, the_list)
 
     def web_scraper(self):
-        print("Scraping Main")
+        print('Scraping Main')
         dex_data = []
+        head = ['Number', 'Name', 'Type', '', 'Address', 'Species', 'Height', 'Weight', 'Local Number(s)']
+        # print(dex_data)
         url = 'http://pokemondb.net/pokedex/'
         r = requests.get(url + 'national').text
         soup = BeautifulSoup(r, 'html.parser')
@@ -85,13 +87,16 @@ class PokemonScraper(Scraper):
         dex_data = self.__my_formatter.add_url(dex_data, url)
         dex_data = self.__my_formatter.get_gen(dex_data, self.__min, self.__max)
         dex_data = self.scrape_additional(dex_data)
+        # print(dex_data)
+        dex_data.insert(0, head)
+
         self.set_local_dex(self.__my_formatter.formatter(dex_data))
         self.set_nat_dex(dex_data)
 
     @staticmethod
     def scrape_additional(the_list):
-        print("Scraping additional")
-        for datum in the_list:
+        print('Scraping additional')
+        for datum in the_list[0:10]:
             url = datum[4]
             print(datum[1])
             r = requests.get(url).text
@@ -103,10 +108,12 @@ class PokemonScraper(Scraper):
             for row in rows:
                 indi.append(row.text)
 
-            datum.append(indi[0])
+            # datum.append(indi[0])
             datum.append(indi[2])
             datum.append(indi[3])
             datum.append(indi[4])
             datum.append(indi[6])
+
+            # print('length: ', len(datum), 'The data: ', datum)
 
         return the_list
