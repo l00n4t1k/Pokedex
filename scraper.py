@@ -1,6 +1,4 @@
 import requests
-from formatter import Formatter as f
-from printer import printer
 from bs4 import BeautifulSoup
 
 
@@ -11,48 +9,32 @@ class Scraper(object):
     __min = 0
     __max = 0
     __my_formatter = ''
+    __my_printer = ''
 
-    def __init__(self, the_formatter):
+    def __init__(self, the_formatter, the_printer):
         self.__my_formatter = the_formatter
+        self.__my_printer = the_printer
 
     def gen_decider(self):
-        gen = self.get_generation()
-        if gen == 1:
-            self.__min = 0
-            self.__max = 151
-        elif gen == 2:
-            self.__min = 151
-            self.__max = 251
-        elif gen == 3:
-            self.__min = 251
-            self.__max = 386
-        elif gen == 4:
-            self.__min = 386
-            self.__max = 493
-        elif gen == 5:
-            self.__min = 493
-            self.__max = 649
-        elif gen == 6:
-            self.__min = 649
-            self.__max = 721
+        pass
 
     def set_nat_dex(self, the_dex):
-        self.__nat_dex = the_dex
+        pass
 
     def get_nat_dex(self):
-        return self.__nat_dex
+        pass
 
     def set_generation(self, the_gen):
-        self.__generation = the_gen
+        pass
 
     def get_generation(self):
-        return self.__generation
+        pass
 
     def get_min(self):
-        return self.__min
+        pass
 
     def get_max(self):
-        return self.__max
+        pass
 
     def web_scraper(self):
         dex_data = []
@@ -71,3 +53,5 @@ class Scraper(object):
         out = self.__my_formatter.formatter(dex_data2, self.__min, self.__max)
         return out
 
+    def print(self, the_gen, the_list):
+        self.__my_printer.printer(the_gen, the_list)

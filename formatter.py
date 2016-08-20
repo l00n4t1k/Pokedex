@@ -1,4 +1,4 @@
-
+from unidecode import unidecode
 
 class Formatter(object):
 
@@ -25,16 +25,29 @@ class Formatter(object):
         return res
 
     @staticmethod
-    def formatter(the_list, min, max):
+    def add_url(the_list, the_url):
+        res = []
+        for datum in the_list:
+            new_url = the_url + datum[1]
+            datum.append(unidecode(new_url))
+        return the_list
+
+    @staticmethod
+    def get_gen(the_list, the_min, the_max):
+        the_res = []
+        for datum in the_list[the_min:the_max]:
+            the_res.append(datum)
+        return the_res
+
+    @staticmethod
+    def formatter(the_list):
         res = []
         cur_line = ''
-        for datum in the_list[min:max]:
-            if int(datum[0]) > min:
-                if int(datum[0]) <= max:
-                    cur_line = datum[0] + ', ' + datum[1] + ', ' + datum[2]
-                    if datum[3] != '':
-                        cur_line += '/' + datum[3]
-                else:
-                    break
-                res.append(cur_line)
+        for datum in the_list:
+            cur_line = datum[0] + ', ' + datum[1] + ', ' + datum[2]
+            if datum[3] != '':
+                cur_line += '/' + datum[3]
+            cur_line += ', ' + datum[4] + ', ' + datum[5] + ', ' + datum[6] + ', ' + datum[7] + ', ' + datum[8] + ', ' \
+                        + datum[9]
+            res.append(cur_line)
         return res
