@@ -5,7 +5,10 @@ class Printer(object):
         print()
         print('-----------------------------------------')
         print()
-        print('Gen ', the_gen, ' List')
+        if the_gen != 0:
+            print('Gen ', the_gen, ' List')
+        else:
+            print('All Pokemon')
         print('----------')
         for datum in the_list:
             print(datum)

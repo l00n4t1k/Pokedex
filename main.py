@@ -3,10 +3,9 @@ from pokemon_scraper import PokemonScraper
 from formatter import Formatter
 from printer import Printer
 
-f = Formatter
-p = Printer
-s = PokemonScraper(f, p)
+
+# f = Formatter
+# p = Printer
+s = PokemonScraper(Formatter, Printer)
 c = Controller(s)
-c.my_scraper.set_generation(2)
-c.my_scraper.web_scraper()
-c.my_scraper.print(c.my_scraper.get_generation(), c.my_scraper.get_local_dex())
+c.start()

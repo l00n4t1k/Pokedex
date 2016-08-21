@@ -1,3 +1,6 @@
+import pickle as pickle
+
+
 class Controller(object):
 
     my_scraper = ''
@@ -12,9 +15,21 @@ class Controller(object):
     def get_full_dex(self):
         self.full_dex = self.my_scraper.web_scrape()
 
-"""
-s.set_generation(2)
-s.gen_decider()
-s.set_nat_dex(s.web_scraper())
-s.printer()
-"""
+    def start(self):
+        try:
+            self.my_scraper = self.load()
+        except FileNotFoundError:
+            self.my_scraper.set_generation(0)
+            self.my_scraper.web_scraper()
+        self.store()
+        self.my_scraper.print(self.my_scraper.get_generation(), self.my_scraper.get_local_dex())
+
+    def store(self):
+        with open('test01.txt', 'wb') as f:
+            pickle.dump(self.my_scraper, f)
+
+    @staticmethod
+    def load():
+        with open('test01.txt', 'rb') as f:
+            data = pickle.load(f)
+        return data

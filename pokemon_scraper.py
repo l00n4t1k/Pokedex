@@ -38,6 +38,9 @@ class PokemonScraper(Scraper):
         elif gen == 6:
             self.__min = 649
             self.__max = 721
+        elif gen == 0:
+            self.__min = 0
+            self.__max = 721
 
     def set_nat_dex(self, the_dex):
         self.__nat_dex = the_dex
@@ -96,7 +99,7 @@ class PokemonScraper(Scraper):
     @staticmethod
     def scrape_additional(the_list):
         print('Scraping additional')
-        for datum in the_list[0:10]:
+        for datum in the_list:
             url = datum[4]
             print(datum[1])
             r = requests.get(url).text

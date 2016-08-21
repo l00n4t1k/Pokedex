@@ -1,4 +1,5 @@
 from unidecode import unidecode
+import re
 
 class Formatter(object):
 
@@ -28,7 +29,18 @@ class Formatter(object):
     def add_url(the_list, the_url):
         res = []
         for datum in the_list:
+            if re.search('♀', datum[1]):
+                datum[1] = 'Nidoran-f'
+            elif re.search('♂', datum[1]):
+                datum[1] = 'Nidoran-m'
+            elif re.search('Farfetch\'d', datum[1]):
+                datum[1] = 'Farfetchd'
+            elif re.search('Mr. Mime', datum[1]):
+                datum[1] = 'Mr-Mime'
+            elif re.search('Mime Jr.', datum[1]):
+                datum[1] = 'Mime-Jr'
             new_url = the_url + datum[1]
+            # print('url append: ', datum[1])
             datum.append(unidecode(new_url))
         return the_list
 
@@ -43,7 +55,7 @@ class Formatter(object):
     def formatter(the_list):
         res = []
         cur_line = ''
-        for datum in the_list[0:11]:
+        for datum in the_list:
             # print(datum)
             cur_line = datum[0] + ', ' + datum[1] + ', ' + datum[2]
             if datum[3] != '':
