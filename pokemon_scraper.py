@@ -37,10 +37,10 @@ class PokemonScraper(Scraper):
             self.__max = 649
         elif gen == 6:
             self.__min = 649
-            self.__max = 721
+            self.__max = 722
         elif gen == 0:
             self.__min = 0
-            self.__max = 721
+            self.__max = 722
 
     def set_nat_dex(self, the_dex):
         self.__nat_dex = the_dex
@@ -67,13 +67,15 @@ class PokemonScraper(Scraper):
     def get_max(self):
         return self.__max
 
+    def get_formatter(self):
+        return self.__my_formatter
+
     def print(self, the_gen, the_list):
         self.__my_printer.printer(the_gen, the_list)
 
     def web_scraper(self):
         print('Scraping Main')
         dex_data = []
-        head = ['Number', 'Name', 'Type', '', 'Address', 'Species', 'Height', 'Weight', 'Local Number(s)']
         # print(dex_data)
         url = 'http://pokemondb.net/pokedex/'
         r = requests.get(url + 'national').text
@@ -91,13 +93,12 @@ class PokemonScraper(Scraper):
         dex_data = self.__my_formatter.get_gen(dex_data, self.__min, self.__max)
         dex_data = self.scrape_additional(dex_data)
         # print(dex_data)
-        dex_data.insert(0, head)
+        # dex_data.insert(0, head)
 
-        self.set_local_dex(self.__my_formatter.formatter(dex_data))
+        # self.set_local_dex(self.__my_formatter.formatter(dex_data))
         self.set_nat_dex(dex_data)
 
-    @staticmethod
-    def scrape_additional(the_list):
+    def scrape_additional(self, the_list):
         print('Scraping additional')
         for datum in the_list:
             url = datum[4]
@@ -112,7 +113,7 @@ class PokemonScraper(Scraper):
                 indi.append(row.text)
 
             # datum.append(indi[0])
-            datum.append(indi[2])
+            datum.append(self.__my_formatter.accent_remover(indi[2]))
             datum.append(indi[3])
             datum.append(indi[4])
             datum.append(indi[6])
@@ -120,3 +121,7 @@ class PokemonScraper(Scraper):
             # print('length: ', len(datum), 'The data: ', datum)
 
         return the_list
+
+    def scrape_accent(self):
+        for i in self.get_nat_dex():
+            i[5] = self.get_formatter().accent_remover(i[5])

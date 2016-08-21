@@ -1,6 +1,7 @@
 from unidecode import unidecode
 import re
 
+
 class Formatter(object):
 
     @staticmethod
@@ -45,6 +46,16 @@ class Formatter(object):
         return the_list
 
     @staticmethod
+    def accent_remover(i):
+        # print(i)
+        if i.find('Pokémon'):
+            # print('found: ', i)
+            i.replace('Pokémon', 'Pokemon')
+        # print('accent remover')
+        return i
+
+
+    @staticmethod
     def get_gen(the_list, the_min, the_max):
         the_res = []
         for datum in the_list[the_min:the_max]:
@@ -54,12 +65,15 @@ class Formatter(object):
     @staticmethod
     def formatter(the_list):
         res = []
+        head = ['Number', 'Name', 'Type', '', 'Address', 'Species', 'Height', 'Weight', 'Local Number(s)']
+        the_list.insert(0, head)
         cur_line = ''
         for datum in the_list:
             # print(datum)
-            cur_line = datum[0] + ', ' + datum[1] + ', ' + datum[2]
+            cur_line = str(datum[0]) + ', ' + str(datum[1]) + ', ' + str(datum[2])
             if datum[3] != '':
-                cur_line += '/' + datum[3]
-            cur_line += ', ' + datum[4] + ', ' + datum[5] + ', ' + datum[6] + ', ' + datum[7] + ', ' + datum[8]
+                cur_line += '/' + str(datum[3])
+            cur_line += ', ' + str(datum[4]) + ', ' + str(datum[5]) + ', ' + str(datum[6]) + ', ' + str(datum[7])\
+                        + ', ' + str(datum[8])
             res.append(cur_line)
         return res
