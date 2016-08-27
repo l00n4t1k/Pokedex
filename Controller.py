@@ -1,5 +1,5 @@
 import pickle as pickle
-import unicodecsv as csv
+import csv
 
 
 class Controller(object):
@@ -30,10 +30,11 @@ class Controller(object):
             self.my_scraper.set_generation(int(i))
             the_min = self.my_scraper.get_min()
             the_max = self.my_scraper.get_max()
-            self.my_scraper.set_local_dex(f.formatter(f.get_gen(self.my_scraper.get_nat_dex(), the_min, the_max)))
-            # print(self.my_scraper.get_local_dex())
-            # print(self.my_scraper.get_formatter().formatter(self.my_scraper.get_local_dex()))
-            self.csv_save(self.my_scraper.get_local_dex())
+            self.my_scraper.set_local_dex(f.readability_formatter(f.get_gen(self.my_scraper.get_nat_dex(), the_min,
+                                                                            the_max)))
+            print(self.my_scraper.get_local_dex())
+            # print(self.my_scraper.get_formatter().readability_formatter(self.my_scraper.get_local_dex()))
+            self.csv_save(f.csv_formatter(f.get_gen(self.my_scraper.get_nat_dex(), the_min, the_max)), i)
             # self.my_scraper.print(self.my_scraper.get_generation(), self.my_scraper.get_local_dex())
         self.store()
 
@@ -47,13 +48,11 @@ class Controller(object):
             data = pickle.load(f)
         return data
 
-    def csv_save(self, the_list):
-        # with open('test01.csv)', 'w') as f:
-        #     the_writer = csv.writer(f, delimiter=',', newline='', encoding='utf-8', quotechar='"', lineterminator='\n')
-        the_writer = csv.writer(open('test01.csv', 'w'), delimiter=',', lineterminator='\n', quotechar='"')
-        # msg = 'Gen ' + str(self.my_scraper.get_generation()) + ' list'
-        # the_writer.writerow(str(msg))
-        for element in the_list:
-            # print(str(type(i)))
-            the_writer.writerow(element)
-        the_writer.close()
+    @staticmethod
+    def csv_save(the_list, num):
+        file = 'test0' + str(num) + '.csv'
+        with open(file, 'w', newline='\n') as the_file:
+            the_writer = csv.writer(the_file, delimiter=':')
+            for i in the_list:
+                i += '\n'
+                the_writer.writerow(str(i))

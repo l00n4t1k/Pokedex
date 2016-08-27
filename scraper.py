@@ -50,7 +50,7 @@ class Scraper(object):
 
         dex_data1 = self.__my_formatter.hash_stripper(dex_data)
         dex_data2 = self.__my_formatter.type_formatter(dex_data1)
-        out = self.__my_formatter.formatter(dex_data2, self.__min, self.__max)
+        out = self.__my_formatter.readability_formatter(dex_data2, self.__min, self.__max)
         return out
 
     def print(self, the_gen, the_list):

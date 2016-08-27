@@ -1,5 +1,5 @@
 
-class Printer(object):
+class IO(object):
     @staticmethod
     def printer(the_gen, the_list):
         print()

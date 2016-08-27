@@ -87,15 +87,7 @@ class PokemonScraper(Scraper):
             stuffs = card.find_all(['a', 'small'])
             dex_data.append([stuff.text for stuff in stuffs[1:4]])
 
-        dex_data = self.__my_formatter.hash_stripper(dex_data)
-        dex_data = self.__my_formatter.type_formatter(dex_data)
-        dex_data = self.__my_formatter.add_url(dex_data, url)
-        dex_data = self.__my_formatter.get_gen(dex_data, self.__min, self.__max)
-        dex_data = self.scrape_additional(dex_data)
-        # print(dex_data)
-        # dex_data.insert(0, head)
-
-        # self.set_local_dex(self.__my_formatter.formatter(dex_data))
+        dex_data = self.format_dex(dex_data)
         self.set_nat_dex(dex_data)
 
     def scrape_additional(self, the_list):
@@ -113,7 +105,7 @@ class PokemonScraper(Scraper):
                 indi.append(row.text)
 
             # datum.append(indi[0])
-            datum.append(self.__my_formatter.accent_remover(indi[2]))
+            datum.append(indi[2])
             datum.append(indi[3])
             datum.append(indi[4])
             datum.append(indi[6])
@@ -122,6 +114,16 @@ class PokemonScraper(Scraper):
 
         return the_list
 
+    def format_dex(self, the_dex, url):
+        dex_data = self.__my_formatter.hash_stripper(the_dex)
+        dex_data = self.__my_formatter.type_formatter(dex_data)
+        dex_data = self.__my_formatter.add_url(dex_data, url)
+        dex_data = self.__my_formatter.get_gen(dex_data, self.__min, self.__max)
+        dex_data = self.scrape_additional(dex_data)
+        return dex_data
+
     def scrape_accent(self):
         for i in self.get_nat_dex():
             i[5] = self.get_formatter().accent_remover(i[5])
+            i[6] = self.get_formatter().imp_remover(i[6])
+            i[7] = self.get_formatter().imp_remover(i[7])
