@@ -1,3 +1,5 @@
+import pickle
+
 
 class IO(object):
     @staticmethod
@@ -12,3 +14,14 @@ class IO(object):
         print('----------')
         for datum in the_list:
             print(datum)
+
+    @staticmethod
+    def pickler(the_object):
+        with open('test01.txt', 'wb') as f:
+            pickle.dump(the_object, f)
+
+    @staticmethod
+    def load(the_file):
+        with open(the_file, 'rb') as f:
+            data = pickle.load(f)
+        return data

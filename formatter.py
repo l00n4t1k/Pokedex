@@ -1,5 +1,6 @@
 from unidecode import unidecode
 import re
+import sys
 
 
 class Formatter(object):
@@ -46,19 +47,26 @@ class Formatter(object):
         return the_list
 
     @staticmethod
+    def comma_remover(i):
+        p = re.compile(',')
+        i = p.sub('/', i)
+        return i
+
+    @staticmethod
     def accent_remover(i):
         p = re.compile('Pokémon')
         i = p.sub('Pokemon', i)
         return i
 
     @staticmethod
-    def imp_remover(i):
-        print(i)
-        reg = re.compile('\d*[.]\d*?.*')
-        n = reg.search(i).string
-        # n = re.compile(n)
-        print(str(n))
-        return n
+    def height_imp_remover(i):
+        n = re.search(r'\d*[.]\d*m', i)
+        return n.group()
+
+    @staticmethod
+    def weight_imp_remover(i):
+        n = re.search(r'\d*[.]\d* kg', i)
+        return n.group()
 
     @staticmethod
     def get_gen(the_list, the_min, the_max):
@@ -91,10 +99,10 @@ class Formatter(object):
         cur_line = ''
         for datum in the_list:
             # print(datum)
-            cur_line = str(datum[0]) + ':' + str(datum[1]) + ':' + str(datum[2])
+            cur_line = str(datum[0]) + ',' + str(datum[1]) + ',' + str(datum[2])
             if datum[3] != '':
                 cur_line += '/' + str(datum[3])
-            cur_line += ':' + str(datum[4]) + ':' + str(datum[5]) + ':' + str(datum[6]) + ':' + str(datum[7]) \
-                        + ':' + str(datum[8])
+            cur_line += ',' + str(datum[4]) + ',' + str(datum[5]) + ',' + str(datum[6]) + ',' + str(datum[7]) \
+                        + ',' + str(datum[8])
             res.append(cur_line)
         return res

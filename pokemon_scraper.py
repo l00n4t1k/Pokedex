@@ -12,11 +12,11 @@ class PokemonScraper(Scraper):
     __nat_dex = []
     __local_dex = []
     __generation = 0
-    __my_printer = ''
+    # __my_printer = ''
 
-    def __init__(self, the_formatter, the_printer):
+    def __init__(self, the_formatter):
         self.__my_formatter = the_formatter
-        self.__my_printer = the_printer
+        # self.__my_printer = the_printer
 
     def gen_decider(self):
         gen = self.get_generation()
@@ -87,7 +87,7 @@ class PokemonScraper(Scraper):
             stuffs = card.find_all(['a', 'small'])
             dex_data.append([stuff.text for stuff in stuffs[1:4]])
 
-        dex_data = self.format_dex(dex_data)
+        dex_data = self.format_dex(dex_data, url)
         self.set_nat_dex(dex_data)
 
     def scrape_additional(self, the_list):
@@ -105,10 +105,10 @@ class PokemonScraper(Scraper):
                 indi.append(row.text)
 
             # datum.append(indi[0])
-            datum.append(indi[2])
-            datum.append(indi[3])
-            datum.append(indi[4])
-            datum.append(indi[6])
+            datum.append(self.get_formatter().accent_remover(indi[2]))
+            datum.append(self.get_formatter().height_imp_remover(indi[3]))
+            datum.append(self.get_formatter().weight_imp_remover(indi[4]))
+            datum.append(self.get_formatter().comma_remover(indi[6]))
 
             # print('length: ', len(datum), 'The data: ', datum)
 
@@ -120,10 +120,13 @@ class PokemonScraper(Scraper):
         dex_data = self.__my_formatter.add_url(dex_data, url)
         dex_data = self.__my_formatter.get_gen(dex_data, self.__min, self.__max)
         dex_data = self.scrape_additional(dex_data)
+        # dex_data = self.scrape_accent(dex_data)
         return dex_data
 
-    def scrape_accent(self):
-        for i in self.get_nat_dex():
+    def scrape_accent(self, the_dex):
+        for i in the_dex:
+            # print(i)
             i[5] = self.get_formatter().accent_remover(i[5])
             i[6] = self.get_formatter().imp_remover(i[6])
             i[7] = self.get_formatter().imp_remover(i[7])
+        return the_dex

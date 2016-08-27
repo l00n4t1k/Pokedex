@@ -1,10 +1,10 @@
 from controller import Controller
 from pokemon_scraper import PokemonScraper
 from formatter import Formatter
-from printer import Printer
+from IO import IO
 
 
 if __name__ == "__main__":
-    s = PokemonScraper(Formatter, Printer)
-    c = Controller(s)
+    s = PokemonScraper(Formatter)
+    c = Controller(s, IO)
     c.start()
