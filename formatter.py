@@ -86,8 +86,11 @@ class Formatter(object):
             cur_line = str(datum[0]) + ', ' + str(datum[1]) + ', ' + str(datum[2])
             if datum[3] != '':
                 cur_line += '/' + str(datum[3])
-            cur_line += ', ' + str(datum[4]) + ', ' + str(datum[5]) + ', ' + str(datum[6]) + ', ' + str(datum[7])\
-                        + ', ' + str(datum[8])
+            cur_line += ', ' + str(datum[4]) + ', ' + str(datum[5]) + ', ' + str(datum[6]) + ', ' + str(datum[7])
+            if re.search('—', datum[8]):
+                cur_line += ', ' + ''
+            else:
+                cur_line += ', ' + str(datum[8])
             res.append(cur_line)
         return res
 

@@ -1,5 +1,3 @@
-import csv
-import IO
 import sys
 import re
 
@@ -8,11 +6,14 @@ class Controller(object):
 
     my_scraper = ''
     my_IO = ''
+    my_cmd = ''
     full_dex = []
+    local_dex = []
 
     def __init__(self, the_scraper, the_io):
         self.my_scraper = the_scraper
         self.my_IO = the_io
+        # self.my_cmd = the_cmd
 
     def set_full_dex(self, the_dex):
         self.full_dex = the_dex
@@ -20,25 +21,23 @@ class Controller(object):
     def get_full_dex(self):
         self.full_dex = self.my_scraper.web_scrape()
 
+    def set_local_dex(self, the_dex):
+        self.local_dex = the_dex
+
+    def get_local_dex(self):
+        return self.local_dex
+
     def ui_start(self):
-        print(sys.argv)
-        try:
-
-            if len(sys.argv) > 1:
-
-                for i in sys.argv:
-                    if i.find('-g') > -1:
-                        gen = IO.get_user_in("Enter the generation you want to see")
-                        if gen.isdigit():
-                            self.start()
-        except AttributeError:
-            print('enter an argument')
-            # gen = self.my_IO.get_user_in("Enter the generation you want to see: ")
-            # if gen.isdigit():
-            #     self.start(gen)
+        if len(sys.argv) > 1:
+            for i in sys.argv:
+                if re.search('-g', i):
+                    gen = self.my_IO.get_user_in("Enter the generation you want to see")
+                    if gen.isdigit():
+                        self.start(gen)
+        else:
+            pass
 
     def start(self, the_gen):
-        sel_dex = []
         f = self.my_scraper.get_formatter()
         x = self.my_IO
         try:
@@ -50,29 +49,13 @@ class Controller(object):
         except EOFError:
             self.my_scraper.set_generation(0)
             self.my_scraper.web_scraper()
-        x.pickler(self.my_scraper.get_nat_dex())
+        self.full_dex = self.my_scraper.get_nat_dex()
+        x.pickler(self.full_dex)
 
         self.my_scraper.find_local_dex(the_gen)
         the_dex = self.my_scraper.get_local_dex()
         self.my_IO.printer(int(the_gen), f.readability_formatter(the_dex))
 
-        """
-        deprecated code - can possibly be deleted
-        # for i in range(1, 2):
-        #     self.my_scraper.set_generation(int(i))
-        #     the_min = self.my_scraper.get_min()
-        #     the_max = self.my_scraper.get_max()
-        #     self.my_scraper.set_local_dex(f.readability_formatter(f.get_gen(self.my_scraper.get_nat_dex(), the_min,
-        #                                                                     the_max)))
-        # print(self.my_scraper.get_local_dex())
-        # print(self.my_scraper.get_nat_dex())
-        # print(self.my_scraper.get_formatter().readability_formatter(self.my_scraper.get_local_dex()))
-        # print(f.csv_formatter(f.get_gen(self.my_scraper.get_nat_dex(), the_min, the_max)))
-        # self.csv_save(f.csv_formatter(f.get_gen(self.my_scraper.get_nat_dex(), the_min, the_max)), i)
-        # self.csv_save(self.my_scraper.get_local_dex(), i)
-        # self.my_scraper.print(self.my_scraper.get_generation(), self.my_scraper.get_local_dex())
-        # x.pickler(self.my_scraper.get_nat_dex())
-        """
     """
     TODO
     get this working during the refactoring maybe?
