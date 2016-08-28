@@ -1,5 +1,5 @@
 import pickle
-
+import sys
 
 class IO(object):
     @staticmethod
@@ -25,3 +25,7 @@ class IO(object):
         with open(the_file, 'rb') as f:
             data = pickle.load(f)
         return data
+
+    @staticmethod
+    def get_user_in(prompt):
+        return input(prompt)

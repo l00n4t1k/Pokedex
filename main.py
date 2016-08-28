@@ -7,4 +7,4 @@ from IO import IO
 if __name__ == "__main__":
     s = PokemonScraper(Formatter)
     c = Controller(s, IO)
-    c.start()
+    c.ui_start()

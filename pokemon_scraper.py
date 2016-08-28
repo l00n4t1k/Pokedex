@@ -12,7 +12,6 @@ class PokemonScraper(Scraper):
     __nat_dex = []
     __local_dex = []
     __generation = 0
-    # __my_printer = ''
 
     def __init__(self, the_formatter):
         self.__my_formatter = the_formatter
@@ -100,18 +99,12 @@ class PokemonScraper(Scraper):
             vt = soup.find('table', attrs={'class': 'vitals-table'})
             rows = vt.find_all('td')
 
-            indi = []
-            for row in rows:
-                indi.append(row.text)
+            indi = [row.text for row in rows]
 
-            # datum.append(indi[0])
             datum.append(self.get_formatter().accent_remover(indi[2]))
             datum.append(self.get_formatter().height_imp_remover(indi[3]))
             datum.append(self.get_formatter().weight_imp_remover(indi[4]))
             datum.append(self.get_formatter().comma_remover(indi[6]))
-
-            # print('length: ', len(datum), 'The data: ', datum)
-
         return the_list
 
     def format_dex(self, the_dex, url):
@@ -120,13 +113,16 @@ class PokemonScraper(Scraper):
         dex_data = self.__my_formatter.add_url(dex_data, url)
         dex_data = self.__my_formatter.get_gen(dex_data, self.__min, self.__max)
         dex_data = self.scrape_additional(dex_data)
-        # dex_data = self.scrape_accent(dex_data)
         return dex_data
 
-    def scrape_accent(self, the_dex):
-        for i in the_dex:
-            # print(i)
-            i[5] = self.get_formatter().accent_remover(i[5])
-            i[6] = self.get_formatter().imp_remover(i[6])
-            i[7] = self.get_formatter().imp_remover(i[7])
-        return the_dex
+    def find_local_dex(self, the_gen):
+        self.set_generation(int(the_gen))
+        self.gen_decider()
+        res = []
+        for i in self.get_nat_dex():
+            if int(i[0]) <= self.__max:
+                if int(i[0]) > self.__min:
+                    res.append(i)
+            else:
+                break
+        self.set_local_dex(res)
