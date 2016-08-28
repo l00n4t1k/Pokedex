@@ -1,4 +1,4 @@
-from unidecode import unidecode
+# import unidecode as unidecode
 import re
 import sys
 
@@ -43,7 +43,7 @@ class Formatter(object):
                 datum[1] = 'Mime-Jr'
             new_url = the_url + datum[1]
             # print('url append: ', datum[1])
-            datum.append(unidecode(new_url))
+            datum.append(new_url)
         return the_list
 
     @staticmethod

@@ -21,17 +21,21 @@ class Controller(object):
         self.full_dex = self.my_scraper.web_scrape()
 
     def ui_start(self):
+        print(sys.argv)
         try:
-            if len(sys.argsv) > 1:
-                for i in sys.argsv:
-                    if i.find('-g') != -1:
+
+            if len(sys.argv) > 1:
+
+                for i in sys.argv:
+                    if i.find('-g') > -1:
                         gen = IO.get_user_in("Enter the generation you want to see")
                         if gen.isdigit():
                             self.start()
         except AttributeError:
-            gen = self.my_IO.get_user_in("Enter the generation you want to see: ")
-            if gen.isdigit():
-                self.start(gen)
+            print('enter an argument')
+            # gen = self.my_IO.get_user_in("Enter the generation you want to see: ")
+            # if gen.isdigit():
+            #     self.start(gen)
 
     def start(self, the_gen):
         sel_dex = []
