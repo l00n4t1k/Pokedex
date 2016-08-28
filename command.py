@@ -5,16 +5,13 @@ class Command(Cmd):
     """
     command line interface
     """
-    intro = "HALP!!"
-    prompt = "(> >_< <)"
+    intro = 'Enter a command or type "help" for a list of commands'
+    prompt = '(> >_< <)'
     my_controller = None
 
     def __init__(self, the_controller):
         super(Command, self).__init__()
         # cmd.Cmd.__init__(self)
-        self.my_controller = the_controller
-
-    def set_controller(self, the_controller):
         self.my_controller = the_controller
 
     def do_new_scrape(self, line):
@@ -64,3 +61,5 @@ class Command(Cmd):
         """
         print("Exiting.")
         return True
+
+    do_q = do_quit

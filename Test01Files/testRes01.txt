@@ -1,2 +1,0 @@
-Number, Name, Type, Address, Species, Height, Weight, Local Number(s)
-001, Bulbasaur, Grass/Poison, http://pokemondb.net/pokedex/Bulbasaur, Seed Pokemon, 2

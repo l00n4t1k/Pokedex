@@ -4,12 +4,13 @@ from bs4 import BeautifulSoup
 
 class Scraper(object):
 
-    __nat_dex = []
-    __generation = 0
-    __min = 0
-    __max = 0
+    __my_controller = ''
     __my_formatter = ''
-    __my_printer = ''
+    __max = 0
+    __min = 0
+    __nat_dex = []
+    __local_dex = []
+    __generation = 0
 
     def __init__(self, the_formatter, the_printer):
         self.__my_formatter = the_formatter
@@ -37,21 +38,7 @@ class Scraper(object):
         pass
 
     def web_scraper(self):
-        dex_data = []
-        url = 'http://pokemondb.net/pokedex/national'
-        r = requests.get(url).text
-        soup = BeautifulSoup(r, 'html.parser')
-        table = soup.find('div', attrs={'class': 'infocard-tall-list'})
-        cards = table.find_all('span')
-
-        for card in cards:
-            stuffs = card.find_all(['a', 'small'])
-            dex_data.append([stuff.text for stuff in stuffs[1:4]])
-
-        dex_data1 = self.__my_formatter.hash_stripper(dex_data)
-        dex_data2 = self.__my_formatter.type_formatter(dex_data1)
-        out = self.__my_formatter.readability_formatter(dex_data2, self.__min, self.__max)
-        return out
+        pass
 
     def print(self, the_gen, the_list):
-        self.__my_printer.printer(the_gen, the_list)
+        pass

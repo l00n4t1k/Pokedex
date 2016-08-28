@@ -5,9 +5,21 @@ from IO import IO
 from command import Command
 
 
+class Main(object):
+
+    def __init__(self):
+        self.my_controller = None
+        self.my_scraper = None
+        self.my_cmd = None
+
+    def go(self):
+        self.my_scraper = PokemonScraper(Formatter)
+        self.my_controller = Controller(self.my_scraper, IO)
+        self.my_cmd = Command(self.my_controller)
+        self.my_cmd.cmdloop()
+        self.my_controller.ui_start()
+
+
 if __name__ == "__main__":
-    s = PokemonScraper(Formatter)
-    c = Controller(s, IO)
-    cmd = Command(c)
-    cmd.cmdloop()
-    c.ui_start()
+    m = Main()
+    m.go()

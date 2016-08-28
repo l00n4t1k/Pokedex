@@ -80,9 +80,7 @@ class Formatter(object):
         res = []
         head = ['Number', 'Name', 'Type', '', 'Address', 'Species', 'Height', 'Weight', 'Local Number(s)']
         the_list.insert(0, head)
-        cur_line = ''
         for datum in the_list:
-            # print(datum)
             cur_line = str(datum[0]) + ', ' + str(datum[1]) + ', ' + str(datum[2])
             if datum[3] != '':
                 cur_line += '/' + str(datum[3])

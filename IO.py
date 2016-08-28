@@ -1,6 +1,7 @@
 import pickle
 import sys
 
+
 class IO(object):
     @staticmethod
     def printer(the_gen, the_list):
