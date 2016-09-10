@@ -9,11 +9,17 @@ class Controller(object):
     my_cmd = ''
     full_dex = []
     local_dex = []
+    response = ''
 
     def __init__(self, the_scraper, the_io):
         self.my_scraper = the_scraper
         self.my_IO = the_io
-        # self.my_cmd = the_cmd
+
+    def get_scraper(self):
+        return self.my_scraper
+
+    def get_io(self):
+        return self.my_IO
 
     def set_full_dex(self, the_dex):
         self.full_dex = the_dex
@@ -43,12 +49,13 @@ class Controller(object):
         try:
             self.my_scraper.set_nat_dex(x.load('test01.txt'))
         except FileNotFoundError:
-            print("File not found. Performing fresh scrape")
-            self.my_scraper.set_generation(0)
-            self.my_scraper.web_scraper()
+            self.response = self.my_IO.get_user_in(
+                "File not found. Would you like to perform a fresh scrape 'Y or N'")
+            self.example(0)
         except EOFError:
-            self.my_scraper.set_generation(0)
-            self.my_scraper.web_scraper()
+            self.response = self.my_IO.get_user_in(
+                "Error reading file. Would you like to perform a fresh scrape 'Y or N'")
+            self.example(0)
         self.full_dex = self.my_scraper.get_nat_dex()
         x.pickler(self.full_dex)
 
@@ -56,15 +63,12 @@ class Controller(object):
         the_dex = self.my_scraper.get_local_dex()
         self.my_IO.printer(int(the_gen), f.readability_formatter(the_dex))
 
-    """
-    TODO
-    get this working during the refactoring maybe?
+    def check_user_in(self, prompt):
+        if str(prompt).capitalize() == 'Y':
+            self.example(0)
+        elif str(prompt).capitalize() == 'N':
+            self.my_cmd.do_load()
 
-    @staticmethod
-    def csv_save(the_list, num):
-        file = 'test0' + str(num) + '.csv'
-        with open(file, 'w', newline='\r\n') as the_file:
-            the_writer = csv.writer(the_file, delimiter=',')
-            # for i in the_list:
-            the_writer.writerow(the_list)
-    """
+    def example(self, the_gen):
+        self.my_scraper.set_generation(the_gen)
+        self.my_scraper.web_scraper()

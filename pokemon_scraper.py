@@ -15,7 +15,6 @@ class PokemonScraper(Scraper):
 
     def __init__(self, the_formatter):
         self.__my_formatter = the_formatter
-        # self.__my_printer = the_printer
 
     def gen_decider(self):
         gen = self.get_generation()
@@ -75,14 +74,13 @@ class PokemonScraper(Scraper):
     def web_scraper(self):
         print('Scraping Main')
         dex_data = []
-        # print(dex_data)
         url = 'http://pokemondb.net/pokedex/'
         r = requests.get(url + 'national').text
         soup = BeautifulSoup(r, 'html.parser')
         table = soup.find('div', attrs={'class': 'infocard-tall-list'})
         cards = table.find_all('span')
 
-        for card in cards:
+        for card in cards[self.__min:self.__max]:
             stuffs = card.find_all(['a', 'small'])
             dex_data.append([stuff.text for stuff in stuffs[1:4]])
 
@@ -101,10 +99,10 @@ class PokemonScraper(Scraper):
 
             indi = [row.text for row in rows]
 
-            datum.append(self.get_formatter().accent_remover(indi[2]))
-            datum.append(self.get_formatter().height_imp_remover(indi[3]))
-            datum.append(self.get_formatter().weight_imp_remover(indi[4]))
-            datum.append(self.get_formatter().comma_remover(indi[6]))
+            datum.append(self.__my_formatter.accent_remover(indi[2]))
+            datum.append(self.__my_formatter.height_imp_remover(indi[3]))
+            datum.append(self.__my_formatter.weight_imp_remover(indi[4]))
+            datum.append(self.__my_formatter.comma_remover(indi[6]))
         return the_list
 
     def format_dex(self, the_dex, url):
@@ -125,4 +123,5 @@ class PokemonScraper(Scraper):
                     res.append(i)
             else:
                 break
+        print(res)
         self.set_local_dex(res)

@@ -1,5 +1,4 @@
 import pickle
-import sys
 
 
 class IO(object):
@@ -18,12 +17,12 @@ class IO(object):
 
     @staticmethod
     def pickler(the_object):
-        with open('F:\CourseMaterial\PR301\pokedex\Pokedex\\test01.txt', 'wb') as f:
+        with open('F:\CourseMaterial(DO-NOT-DELETE)\Year4\PR301\PythonShit\pokedex\Pokedex\\test01.txt', 'wb') as f:
             pickle.dump(the_object, f)
 
     @staticmethod
     def load(the_file):
-        the_file = 'F:\CourseMaterial\PR301\pokedex\Pokedex\\' + the_file
+        the_file = 'F:\CourseMaterial(DO-NOT-DELETE)\Year4\PR301\PythonShit\pokedex\Pokedex\\' + the_file
         with open(the_file, 'rb') as f:
             data = pickle.load(f)
         return data

@@ -1,6 +1,4 @@
-# import unidecode as unidecode
 import re
-import sys
 
 
 class Formatter(object):
@@ -16,7 +14,6 @@ class Formatter(object):
     @staticmethod
     def type_formatter(the_list):
         res = []
-        tl = []
         for datum in the_list:
             if datum[2].find(' · ') == -1:
                 datum.append('')
@@ -27,10 +24,9 @@ class Formatter(object):
             res.append(datum)
         return res
 
-    @staticmethod
-    def add_url(the_list, the_url):
-        res = []
+    def add_url(self, the_list, the_url):
         for datum in the_list:
+            datum[1] = self.accent_remover(datum[1])
             if re.search('♀', datum[1]):
                 datum[1] = 'Nidoran-f'
             elif re.search('♂', datum[1]):
@@ -42,7 +38,6 @@ class Formatter(object):
             elif re.search('Mime Jr.', datum[1]):
                 datum[1] = 'Mime-Jr'
             new_url = the_url + datum[1]
-            # print('url append: ', datum[1])
             datum.append(new_url)
         return the_list
 
@@ -54,8 +49,8 @@ class Formatter(object):
 
     @staticmethod
     def accent_remover(i):
-        p = re.compile('Pokémon')
-        i = p.sub('Pokemon', i)
+        p = re.compile('é')
+        i = p.sub('e', i)
         return i
 
     @staticmethod
@@ -77,6 +72,7 @@ class Formatter(object):
 
     @staticmethod
     def readability_formatter(the_list):
+        print(the_list)
         res = []
         head = ['Number', 'Name', 'Type', '', 'Address', 'Species', 'Height', 'Weight', 'Local Number(s)']
         the_list.insert(0, head)

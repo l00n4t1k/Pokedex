@@ -8,18 +8,30 @@ class Command(Cmd):
     intro = 'Enter a command or type "help" for a list of commands'
     prompt = '(> >_< <)'
     my_controller = None
+    my_scraper = None
+    my_formatter = None
+    my_IO = None
+    __gen = 0
+
+    def set__gen(self, the_gen):
+        self.__gen = the_gen
+
+    def get__gen(self):
+        return self.__gen
 
     def __init__(self, the_controller):
         super(Command, self).__init__()
-        # cmd.Cmd.__init__(self)
         self.my_controller = the_controller
+        self.my_scraper = self.my_controller.get_scraper()
+        self.my_IO = self.my_controller.get_io()
+        self.my_formatter = self.my_controller.my_scraper.get_formatter()
 
     def do_new_scrape(self, line):
         """
         Perform a fresh web scrape of the entire pokedex
         """
-        self.my_controller.my_scraper.set_generation(0)
-        self.my_controller.my_scraper.web_scraper()
+        self.my_scraper.set_generation(0)
+        self.my_scraper.web_scraper()
 
     def do_load(self, line):
         """
@@ -27,7 +39,7 @@ class Command(Cmd):
         """
         file_name = input(">>> Enter the name of the pickled file to load: ")
         try:
-            self.my_controller.my_scraper.set_nat_dex(self.my_controller.my_IO.load(file_name))
+            self.my_scraper.set_nat_dex(self.my_IO.load(file_name))
         except FileNotFoundError:
             res = input('File not found. Would you like to perform a fresh scrape "Y or N" ? ')
             if res.upper() == 'Y':
@@ -37,22 +49,20 @@ class Command(Cmd):
         """
         Creates a list of all the Pokemon from the entered generation
         """
-        gen = input("Enter the generation number you want to search for: ")
-        self.my_controller.set_local_dex(self.my_controller.my_scraper.find_local_dex(gen))
+        self.__gen = input("Enter the generation number you want to search for: ")
+        self.my_scraper.find_local_dex(self.__gen)
 
     def do_print_nat(self, line):
         """
         Prints the full national Pokedex of 721 Pokemon
         """
-        self.my_controller.my_IO.printer(0, self.my_controller.my_scraper.get_formatter().readability_formatter(
-            self.my_controller.my_scraper.get_nat_dex()))
+        self.my_IO.printer(0, self.my_formatter.readability_formatter(self.my_scraper.get_nat_dex()))
 
     def do_print_local(self, line):
         """
         Prints the selected local Pokedex
         """
-        self.my_controller.my_IO.printer(0, self.my_controller.my_scraper.get_formatter().readability_formatter(
-            self.my_controller.get_local_dex()))
+        self.my_IO.printer(self.__gen, self.my_formatter.readability_formatter(self.my_scraper.get_local_dex()))
 
     @staticmethod
     def do_quit(line):
