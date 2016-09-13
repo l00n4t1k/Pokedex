@@ -25,7 +25,7 @@ class Controller(object):
         self.full_dex = the_dex
 
     def get_full_dex(self):
-        self.full_dex = self.my_scraper.web_scrape()
+        return self.full_dex
 
     def set_local_dex(self, the_dex):
         self.local_dex = the_dex

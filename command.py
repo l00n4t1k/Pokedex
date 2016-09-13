@@ -12,12 +12,19 @@ class Command(Cmd):
     my_formatter = None
     my_IO = None
     __gen = 0
+    __filepath = None
 
     def set__gen(self, the_gen):
         self.__gen = the_gen
 
     def get__gen(self):
         return self.__gen
+
+    def set_filepath(self, is_load):
+        if is_load:
+            self.__filepath = input("Enter the path to the folder your file is stored: ")
+        else:
+            self.__filepath = input("Enter the path to the folder you wish to store the file in: ")
 
     def __init__(self, the_controller):
         super(Command, self).__init__()
@@ -30,16 +37,24 @@ class Command(Cmd):
         """
         Perform a fresh web scrape of the entire pokedex
         """
+        if self.__filepath is None:
+            self.set_filepath(False)
+        print("Saving scrape to " + self.__filepath)
+        filename = input("Enter the name to save the file as: ")
         self.my_scraper.set_generation(0)
-        self.my_scraper.web_scraper()
+        dex = self.my_scraper.web_scraper()
+        self.my_controller.set_full_dex(dex)
+        self.my_IO.pickler(self.my_controller.get_full_dex(), self.__filepath, filename)
 
     def do_load(self, line):
         """
         Loads a pickled instance of a full national pokedex (all 721 Pokemon from the 6 generations)
         """
         file_name = input(">>> Enter the name of the pickled file to load: ")
+        if self.__filepath is None:
+            self.set_filepath(True)
         try:
-            self.my_scraper.set_nat_dex(self.my_IO.load(file_name))
+            self.my_scraper.set_nat_dex(self.my_IO.load(self.__filepath, file_name))
         except FileNotFoundError:
             res = input('File not found. Would you like to perform a fresh scrape "Y or N" ? ')
             if res.upper() == 'Y':

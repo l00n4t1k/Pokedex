@@ -106,10 +106,11 @@ class PokemonScraper(Scraper):
         return the_list
 
     def format_dex(self, the_dex, url):
-        dex_data = self.__my_formatter.hash_stripper(the_dex)
-        dex_data = self.__my_formatter.type_formatter(dex_data)
-        dex_data = self.__my_formatter.add_url(dex_data, url)
-        dex_data = self.__my_formatter.get_gen(dex_data, self.__min, self.__max)
+        print(url)
+        dex_data = self.get_formatter().hash_stripper(the_dex)
+        dex_data = self.get_formatter().type_formatter(dex_data)
+        dex_data = self.get_formatter().add_url(self.get_formatter(), dex_data, url)
+        dex_data = self.get_formatter().get_gen(dex_data, self.__min, self.__max)
         dex_data = self.scrape_additional(dex_data)
         return dex_data
 
@@ -123,5 +124,4 @@ class PokemonScraper(Scraper):
                     res.append(i)
             else:
                 break
-        print(res)
         self.set_local_dex(res)

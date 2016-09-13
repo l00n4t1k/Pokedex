@@ -14,21 +14,20 @@ else:
 a = [2, 4, "t", 3.9]
 print(type(str(a)))
 
-
 var = [1, 2, 3, 4, 5, 6, 7, 9, 10, 24, 25]
 print([v for v in var[3:10]])
-
-"""
-b = True
-while b:
-    i = 1
-    if i > 4:
-        b = not b
-    print(i)
-    i += 1
-"""
 
 print(test2.testvar1)
 testvar1 = "hello"
 print(testvar1)
 
+
+def fib():
+    a, b = 0, 1
+    while True:
+        yield a
+        a, b = b, a + b
+
+
+for index, fibonacci_number in enumerate(fib()):
+    print('{i:3}: {f:3}'.format(i=index, f=fibonacci_number))
